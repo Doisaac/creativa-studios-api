@@ -3,6 +3,6 @@
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "usernamehw.errorlens",
-    "bradlc.vscode-tailwindcss"
+    "mtxr.sqltools"
   ]
 }
