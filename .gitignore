@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.template
+
+# Runtime data
+pids/
+*.pid
+*.pid.lock
+
+# Cache and temp files
+.cache/
+.tmp/
+temp/
+tmp/
+.eslintcache
+
+# Editor and IDE files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.iml
+
+# Test artifacts
+.nyc_output/
+
+# Package managers and monorepo tools
+.turbo/
+.nx/
+
+# Optional framework outputs
+.next/
+out/
+.svelte-kit/
+.parcel-cache/
+
+# Docker local overrides
+docker-compose.override.yml
+
+# OS files - Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+
+# OS files - Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# OS files - macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes

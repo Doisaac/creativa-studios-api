@@ -1,0 +1,44 @@
+import express from 'express'
+import morgan from 'morgan'
+
+import { PORT } from './config.js'
+
+const app = express()
+
+const SERVER_STARTED_AT = Date.now()
+
+// Transforma el cuerpo de la solicitud en formato JSON
+app.use(express.json())
+
+// Muestra los log de las solicitudes HTTP en la consola
+app.use(morgan('dev'))
+
+// Muestra si la API está corriendo en el navegador
+app.use(express.static('public'))
+
+// Ruta de salud para verificar que la API está funcionando
+app.get('/health', (req, res) => {
+  const now = Date.now()
+  const uptimeSeconds = Math.floor((now - SERVER_STARTED_AT) / 1000)
+
+  res.status(200).json({
+    success: true,
+    data: {
+      status: 'healthy',
+      service: 'creativa-studios-api',
+      message: 'API está corriendo correctamente',
+      uptimeSeconds,
+      timestamp: new Date(now).toLocaleString('es-SV'),
+    },
+  })
+})
+
+// Inicia el servidor en el puerto especificado
+app.listen(PORT, () => {
+  console.log('===============================')
+  console.log(`Server is running on port ${PORT}`)
+  console.log('===============================')
+
+  // logs
+  console.log('\n--Server logs\n')
+})
