@@ -81,77 +81,16 @@ La API quedará disponible en:
 pnpm run dev      # Modo desarrollo con watch (tsx)
 pnpm run build    # Compila TypeScript a /dist
 pnpm run start    # Ejecuta build compilado
+pnpm run docs:swagger # Genera docs/swagger/swagger_output.json
 pnpm run lint     # Linter con ESLint
 pnpm run format   # Formateo con Prettier
 ```
 
 ## Endpoints actuales
 
-### Health check
+Para ver todos los endpoints disponibles, abre la documentación Swagger en (reemplaza el puerto si es necesario):
 
-- **GET** `/health`
-- Verifica si la API está corriendo.
-
-Respuesta esperada (200):
-
-```json
-{
-  "success": true,
-  "data": {
-    "status": "healthy",
-    "service": "creativa-studios-api",
-    "message": "API está corriendo correctamente",
-    "uptimeSeconds": 10,
-    "timestamp": "23/4/2026, 10:30:00"
-  }
-}
-```
-
-### Auth
-
-- **POST** `/api/auth/register`
-- Registra un usuario y devuelve token JWT.
-
-Body:
-
-```json
-{
-  "name": "Juan Perez",
-  "email": "juan@correo.com",
-  "password": "12345678",
-  "role": "RECEPCION"
-}
-```
-
-Campos:
-
-- `name` (requerido)
-- `email` (requerido)
-- `password` (requerido)
-- `role` (opcional, por defecto `RECEPCION`)
-
-Respuesta exitosa (201):
-
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": 1,
-      "name": "Juan Perez",
-      "role": "RECEPCION"
-    },
-    "token": "<jwt>"
-  }
-}
-```
-
-Errores comunes:
-
-- 400: campos faltantes
-- 400: usuario ya existe
-- 400: rol no válido
-- 500: error interno en registro
+- `http://localhost:4000/docs`
 
 ## Estructura del proyecto
 

@@ -1,5 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
+import swaggerDocumentation from '../docs/swagger/swagger_output.json' with { type: 'json' }
+import swaggerUI from 'swagger-ui-express'
 
 import { PORT } from './config.js'
 import authRouter from './routes/auth.routes.js'
@@ -16,6 +18,9 @@ app.use(morgan('dev'))
 
 // Muestra si la API está corriendo en el navegador
 app.use(express.static('public'))
+
+// Docs
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 
 // Rutas
 app.use('/api/auth', authRouter)
