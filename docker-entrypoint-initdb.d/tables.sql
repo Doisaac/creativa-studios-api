@@ -30,3 +30,9 @@ CREATE TABLE user_roles (
         REFERENCES roles(id)
         ON DELETE CASCADE
 );
+
+INSERT INTO roles (name, description) VALUES
+('ADMIN', 'Dueño o administrador'),
+('RECEPCION', 'Gestión de pedidos'),
+('PRODUCCION', 'Equipo de producción'),
+('INSTALADOR', 'Equipo instalador');

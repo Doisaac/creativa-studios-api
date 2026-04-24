@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 
 import { PORT } from './config.js'
+import authRouter from './routes/auth.routes.js'
 
 const app = express()
 
@@ -15,6 +16,9 @@ app.use(morgan('dev'))
 
 // Muestra si la API está corriendo en el navegador
 app.use(express.static('public'))
+
+// Rutas
+app.use('/api/auth', authRouter)
 
 // Ruta de salud para verificar que la API está funcionando
 app.get('/health', (req, res) => {
