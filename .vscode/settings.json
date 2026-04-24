@@ -4,5 +4,18 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "editor.formatOnType": false,
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "sqltools.connections": [
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "creativa_studios_api_db",
+      "database": "creativa_studios_api",
+      "username": "hadogari_iadmin"
+    }
+  ]
 }
