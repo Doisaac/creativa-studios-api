@@ -10,6 +10,16 @@ const doc = {
   },
   host: 'localhost:4000',
   schemes: ['http'],
+  tags: [
+    {
+      name: 'Auth',
+      description: 'Autenticación',
+    },
+    {
+      name: 'Health',
+      description: 'Salud de la API',
+    },
+  ],
 }
 
 swaggerAutogen()(outputFile, endpointsFiles, doc)

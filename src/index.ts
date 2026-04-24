@@ -26,21 +26,25 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 app.use('/api/auth', authRouter)
 
 // Ruta de salud para verificar que la API está funcionando
-app.get('/health', (req, res) => {
-  const now = Date.now()
-  const uptimeSeconds = Math.floor((now - SERVER_STARTED_AT) / 1000)
+app.get(
+  '/health',
+  /* #swagger.tags = ['Health'] */
+  (req, res) => {
+    const now = Date.now()
+    const uptimeSeconds = Math.floor((now - SERVER_STARTED_AT) / 1000)
 
-  res.status(200).json({
-    success: true,
-    data: {
-      status: 'healthy',
-      service: 'creativa-studios-api',
-      message: 'API está corriendo correctamente',
-      uptimeSeconds,
-      timestamp: new Date(now).toLocaleString('es-SV'),
-    },
-  })
-})
+    res.status(200).json({
+      success: true,
+      data: {
+        status: 'healthy',
+        service: 'creativa-studios-api',
+        message: 'API está corriendo correctamente',
+        uptimeSeconds,
+        timestamp: new Date(now).toLocaleString('es-SV'),
+      },
+    })
+  },
+)
 
 // Inicia el servidor en el puerto especificado
 app.listen(PORT, () => {
