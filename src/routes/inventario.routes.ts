@@ -16,7 +16,7 @@ const inventarioRouter: RouterType = Router()
 inventarioRouter.post(
   '/',
   /* #swagger.tags = ['Inventario']
-     #swagger.summary = 'Crear insumo/material de inventario'
+     #swagger.summary = 'Crear insumo/material de inventario (ADMIN)'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
@@ -67,7 +67,7 @@ inventarioRouter.get(
 inventarioRouter.patch(
   '/:id',
   /* #swagger.tags = ['Inventario']
-     #swagger.summary = 'Actualizar inventario sin modificar stock_actual'
+     #swagger.summary = 'Actualizar inventario sin modificar stock_actual (ADMIN)'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
@@ -87,7 +87,7 @@ inventarioRouter.patch(
 inventarioRouter.delete(
   '/:id',
   /* #swagger.tags = ['Inventario']
-     #swagger.summary = 'Eliminar inventario si no tiene referencias'
+     #swagger.summary = 'Eliminar inventario si no tiene referencias (ADMIN)'
   */
 
   validateJWT,

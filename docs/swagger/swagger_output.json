@@ -152,7 +152,7 @@
         "tags": [
           "Inventario"
         ],
-        "summary": "Crear insumo/material de inventario",
+        "summary": "Crear insumo/material de inventario (ADMIN)",
         "description": "",
         "parameters": [
           {
@@ -288,7 +288,7 @@
         "tags": [
           "Inventario"
         ],
-        "summary": "Actualizar inventario sin modificar stock_actual",
+        "summary": "Actualizar inventario sin modificar stock_actual (ADMIN)",
         "description": "",
         "parameters": [
           {
@@ -344,7 +344,7 @@
         "tags": [
           "Inventario"
         ],
-        "summary": "Eliminar inventario si no tiene referencias",
+        "summary": "Eliminar inventario si no tiene referencias (ADMIN)",
         "description": "",
         "parameters": [
           {
