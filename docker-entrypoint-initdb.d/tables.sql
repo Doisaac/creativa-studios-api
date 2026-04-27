@@ -1,37 +1,24 @@
-CREATE TABLE roles (
+CREATE TABLE rol (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    nombre VARCHAR(50) UNIQUE NOT NULL,
+    descripcion TEXT
 );
 
-CREATE TABLE users (
+CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
-    password TEXT NOT NULL, -- hash (bcrypt)
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    contrasena TEXT NOT NULL,
+    id_rol INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_usuario_id_rol
+        FOREIGN KEY (id_rol)
+        REFERENCES rol(id)
+        ON DELETE RESTRICT
 );
 
-CREATE TABLE user_roles (
-    user_id INT NOT NULL,
-    role_id INT NOT NULL,
-
-    PRIMARY KEY (user_id, role_id),
-
-    CONSTRAINT fk_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_role
-        FOREIGN KEY (role_id)
-        REFERENCES roles(id)
-        ON DELETE CASCADE
-);
-
-INSERT INTO roles (name, description) VALUES
+INSERT INTO rol (nombre, descripcion) VALUES
 ('ADMIN', 'Dueño o administrador'),
 ('RECEPCION', 'Gestión de pedidos'),
 ('PRODUCCION', 'Equipo de producción'),

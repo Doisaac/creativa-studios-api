@@ -7,12 +7,11 @@ import type { AuthRequest } from '../types/auth.types.js'
 
 export const registerUser = async (req: Request, res: Response) => {
   const client = await pool.connect()
-  console.log(req.body)
   try {
-    const { name, email, password, role = 'RECEPCION' } = req.body || {}
+    const { nombre, email, contrasena, rol = 'RECEPCION' } = req.body || {}
 
     // Validar campos
-    if (!name || !email || !password) {
+    if (!nombre || !email || !contrasena) {
       return res.status(400).json({
         success: false,
         message: 'Todos los campos son obligatorios',
@@ -23,7 +22,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     // Verificar si el usuario ya existe
     const userExists = await client.query(
-      'SELECT id FROM users WHERE email = $1',
+      'SELECT id FROM usuario WHERE email = $1',
       [email],
     )
 
@@ -37,22 +36,12 @@ export const registerUser = async (req: Request, res: Response) => {
 
     // Hash password
     const salt = bcrypt.genSaltSync()
-    const hashedPassword = bcrypt.hashSync(password, salt)
-
-    // Crear usuario
-    const userResult = await client.query(
-      `INSERT INTO users (name, email, password)
-       VALUES ($1, $2, $3)
-       RETURNING id, name`,
-      [name, email, hashedPassword],
-    )
-
-    const user = userResult.rows[0]
+    const hashedPassword = bcrypt.hashSync(contrasena, salt)
 
     // Obtener role_id
     const roleResult = await client.query(
-      'SELECT id, name FROM roles WHERE name = $1',
-      [role],
+      'SELECT id, nombre FROM rol WHERE nombre = $1',
+      [rol],
     )
 
     if (roleResult.rows.length === 0) {
@@ -65,25 +54,28 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const roleData = roleResult.rows[0]
 
-    // Insert en user_roles
-    await client.query(
-      `INSERT INTO user_roles (user_id, role_id)
-       VALUES ($1, $2)`,
-      [user.id, roleData.id],
+    // Crear usuario con rol asociado
+    const userResult = await client.query(
+      `INSERT INTO usuario (nombre, email, contrasena, id_rol)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, nombre`,
+      [nombre, email, hashedPassword, roleData.id],
     )
+
+    const user = userResult.rows[0]
 
     await client.query('COMMIT')
 
     // Generar JWT con rol
-    const token = await generateJWT(user.id, user.name, roleData.name)
+    const token = await generateJWT(user.id, user.nombre, roleData.nombre)
 
     return res.status(201).json({
       success: true,
       data: {
         user: {
           id: user.id,
-          name: user.name,
-          role: roleData.name,
+          nombre: user.nombre,
+          rol: roleData.nombre,
         },
         token,
       },
@@ -104,25 +96,24 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body
+    const { email, contrasena } = req.body
 
-    if (!email || !password) {
+    if (!email || !contrasena) {
       return res.status(400).json({
         success: false,
-        message: 'Email y password son obligatorios',
+        message: 'Email y contrasena son obligatorios',
       })
     }
     // Busca el usuario y su rol
     const result = await pool.query(
       `SELECT 
         u.id,
-        u.name,
+        u.nombre,
         u.email,
-        u.password,
-        r.name AS role
-      FROM users u
-      JOIN user_roles ur ON ur.user_id = u.id
-      JOIN roles r ON r.id = ur.role_id
+        u.contrasena,
+        r.nombre AS role
+      FROM usuario u
+      JOIN rol r ON r.id = u.id_rol
       WHERE u.email = $1
       LIMIT 1`,
       [email],
@@ -138,7 +129,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const user = result.rows[0]
 
     // Verificar contraseña
-    const isValidPassword = bcrypt.compareSync(password, user.password)
+    const isValidPassword = bcrypt.compareSync(contrasena, user.contrasena)
 
     if (!isValidPassword) {
       return res.status(400).json({
@@ -148,15 +139,15 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Genera JWT con el rol del usuario
-    const token = await generateJWT(user.id, user.name, user.role)
+    const token = await generateJWT(user.id, user.nombre, user.role)
 
     return res.status(200).json({
       success: true,
       data: {
         user: {
           id: user.id,
-          name: user.name,
-          role: user.role,
+          nombre: user.nombre,
+          rol: user.role,
         },
         token,
       },
