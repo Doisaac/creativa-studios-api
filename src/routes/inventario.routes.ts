@@ -17,17 +17,14 @@ inventarioRouter.post(
   '/',
   /* #swagger.tags = ['Inventario']
      #swagger.summary = 'Crear insumo/material de inventario'
-     #swagger.requestBody = {
+     #swagger.parameters['body'] = {
+       in: 'body',
        required: true,
-       content: {
-         "application/json": {
-           example: {
-             "nombre": "Vinil mate blanco",
-             "stock_actual": 25,
-             "stock_minimo": 10,
-             "unidad_de_medida": "metros"
-           }
-         }
+       schema: {
+         nombre: 'Camisas Talla S blanco 100% algodón',
+         stock_actual: 25,
+         stock_minimo: 10,
+         unidad_de_medida: 'Unidades'
        }
      }
   */
@@ -71,16 +68,13 @@ inventarioRouter.patch(
   '/:id',
   /* #swagger.tags = ['Inventario']
      #swagger.summary = 'Actualizar inventario sin modificar stock_actual'
-     #swagger.requestBody = {
+     #swagger.parameters['body'] = {
+       in: 'body',
        required: true,
-       content: {
-         "application/json": {
-           example: {
-             "nombre": "Vinil mate premium",
-             "stock_minimo": 12,
-             "unidad_de_medida": "metros"
-           }
-         }
+       schema: {
+         nombre: 'Camisas Talla S blanco 100% algodón',
+         stock_minimo: 12,
+         unidad_de_medida: 'Unidades'
        }
      }
   */

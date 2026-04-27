@@ -146,25 +146,51 @@
         ],
         "summary": "Crear insumo/material de inventario",
         "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Camisas Talla S blanco 100% algodón"
+                },
+                "stock_actual": {
+                  "type": "number",
+                  "example": 25
+                },
+                "stock_minimo": {
+                  "type": "number",
+                  "example": 10
+                },
+                "unidad_de_medida": {
+                  "type": "string",
+                  "example": "Unidades"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
           },
           "400": {
             "description": "Bad Request"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "nombre": "Vinil mate blanco",
-                "stock_actual": 25,
-                "stock_minimo": 10,
-                "unidad_de_medida": "metros"
-              }
-            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       },
@@ -176,28 +202,9 @@
         "description": "",
         "parameters": [
           {
-            "name": "page",
-            "in": "query",
-            "type": "integer",
-            "example": 1
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "integer",
-            "example": 10
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "type": "string",
-            "example": "vinil"
-          },
-          {
-            "name": "bajo_stock",
-            "in": "query",
-            "type": "string",
-            "example": "true"
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -206,6 +213,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -217,9 +227,19 @@
         ],
         "summary": "Obtener inventario con bajo stock",
         "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -237,6 +257,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -245,6 +270,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
@@ -260,6 +288,33 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Camisas Talla S blanco 100% algodón"
+                },
+                "stock_minimo": {
+                  "type": "number",
+                  "example": 12
+                },
+                "unidad_de_medida": {
+                  "type": "string",
+                  "example": "Unidades"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -268,18 +323,12 @@
           },
           "400": {
             "description": "Bad Request"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "nombre": "Vinil mate premium",
-                "stock_minimo": 12,
-                "unidad_de_medida": "metros"
-              }
-            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       },
@@ -295,6 +344,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -303,6 +357,12 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
