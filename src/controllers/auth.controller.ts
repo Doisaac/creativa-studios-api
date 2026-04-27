@@ -3,18 +3,34 @@ import type { Request, Response } from 'express'
 
 import { generateJWT } from '../helpers/jwt.helper.js'
 import { pool } from '../db.js'
-import type { AuthRequest } from '../types/auth.types.js'
+import {
+  ROLES_PERMITIDOS,
+  type AuthRequest,
+  type RolPermitido,
+} from '../types/auth.types.js'
 
 export const registerUser = async (req: Request, res: Response) => {
   const client = await pool.connect()
   try {
-    const { nombre, email, contrasena, rol = 'RECEPCION' } = req.body || {}
+    const {
+      nombre,
+      email,
+      contrasena,
+      rol = 'RECEPCION' as RolPermitido,
+    } = req.body || {}
 
     // Validar campos
     if (!nombre || !email || !contrasena) {
       return res.status(400).json({
         success: false,
         message: 'Todos los campos son obligatorios',
+      })
+    }
+
+    if (!ROLES_PERMITIDOS.includes(rol)) {
+      return res.status(400).json({
+        success: false,
+        message: `Rol no valido. Roles permitidos: ${ROLES_PERMITIDOS.join(', ')}`,
       })
     }
 
