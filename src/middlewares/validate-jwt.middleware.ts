@@ -29,7 +29,7 @@ export const validateJWT = (
   } catch {
     return res.status(401).json({
       ok: false,
-      msg: 'El token no es válido',
+      message: 'El token no es válido',
     })
   }
 }
