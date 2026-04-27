@@ -17,11 +17,15 @@
       "description": "Salud de la API"
     }
   ],
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/health": {
       "get": {
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -32,7 +36,9 @@
     },
     "/api/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -41,16 +47,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "nombre": {
                   "example": "any"
                 },
                 "email": {
                   "example": "any"
                 },
-                "password": {
+                "contrasena": {
                   "example": "any"
                 },
-                "role": {
+                "rol": {
                   "example": "any"
                 }
               }
@@ -72,7 +78,9 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -84,7 +92,7 @@
                 "email": {
                   "example": "any"
                 },
-                "password": {
+                "contrasena": {
                   "example": "any"
                 }
               }
@@ -106,7 +114,9 @@
     },
     "/api/auth/renew": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
