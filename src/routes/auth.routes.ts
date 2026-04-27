@@ -11,19 +11,36 @@ const authRouter: RouterType = Router()
 
 authRouter.post(
   '/register',
-  /* #swagger.tags = ['Auth']*/
+  /* #swagger.tags = ['Auth']
+     #swagger.summary = 'Crear usuario para utilizar el sistema'
+     #swagger.parameters['body'] = {
+       in: 'body',
+       required: true,
+       schema: {
+         nombre: 'Douglas Barrera',
+         email: 'douglas@creativa.com',
+         contraseña: 'password123',
+         rol: 'ADMIN | RECEPCION | PRODUCCION | INSTALADOR'
+       }
+     }
+  */
+
   registerUser,
 )
 
 authRouter.post(
   '/login',
-  /* #swagger.tags = ['Auth']*/
+  /* #swagger.tags = ['Auth']
+     #swagger.summary = 'Iniciar sesión en el sistema'
+  */
   loginUser,
 )
 
 authRouter.post(
   '/renew',
-  /* #swagger.tags = ['Auth']*/
+  /* #swagger.tags = ['Auth']
+     #swagger.summary = 'Renovar token de autenticación'
+  */
   validateJWT,
   renewJWT,
 )

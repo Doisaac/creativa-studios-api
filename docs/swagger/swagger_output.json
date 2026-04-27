@@ -43,25 +43,31 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Crear usuario para utilizar el sistema",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "nombre": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Douglas Barrera"
                 },
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "douglas@creativa.com"
                 },
-                "contrasena": {
-                  "example": "any"
+                "contraseña": {
+                  "type": "string",
+                  "example": "password123"
                 },
                 "rol": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "ADMIN | RECEPCION | PRODUCCION | INSTALADOR"
                 }
               }
             }
@@ -85,6 +91,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Iniciar sesión en el sistema",
         "description": "",
         "parameters": [
           {
@@ -121,6 +128,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Renovar token de autenticación",
         "description": "",
         "parameters": [
           {
