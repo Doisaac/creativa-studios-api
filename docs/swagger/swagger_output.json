@@ -15,6 +15,10 @@
     {
       "name": "Health",
       "description": "Salud de la API"
+    },
+    {
+      "name": "Inventario",
+      "description": "Gestión de inventario"
     }
   ],
   "schemes": [
@@ -131,6 +135,174 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/inventario/": {
+      "post": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Crear insumo/material de inventario",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "nombre": "Vinil mate blanco",
+                "stock_actual": 25,
+                "stock_minimo": 10,
+                "unidad_de_medida": "metros"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Listar inventario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "example": 10
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "example": "vinil"
+          },
+          {
+            "name": "bajo_stock",
+            "in": "query",
+            "type": "string",
+            "example": "true"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/inventario/low-stock": {
+      "get": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Obtener inventario con bajo stock",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/inventario/{id}": {
+      "get": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Obtener inventario por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Actualizar inventario sin modificar stock_actual",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "nombre": "Vinil mate premium",
+                "stock_minimo": 12,
+                "unidad_de_medida": "metros"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Inventario"
+        ],
+        "summary": "Eliminar inventario si no tiene referencias",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }

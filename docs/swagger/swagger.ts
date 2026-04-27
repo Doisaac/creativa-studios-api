@@ -19,6 +19,10 @@ const doc = {
       name: 'Health',
       description: 'Salud de la API',
     },
+    {
+      name: 'Inventario',
+      description: 'Gestión de inventario',
+    },
   ],
 }
 
