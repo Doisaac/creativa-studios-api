@@ -182,6 +182,9 @@ ON detalle_pedido(id_pedido);
 CREATE INDEX idx_movimiento_inventario
 ON movimiento_inventario(id_inventario);
 
+CREATE INDEX idx_movimiento_inventario_inventario_fecha
+ON movimiento_inventario(id_inventario, fecha_movimiento DESC, id DESC);
+
 
 INSERT INTO rol (nombre, descripcion) VALUES
 ('ADMIN', 'Dueño o administrador'),
