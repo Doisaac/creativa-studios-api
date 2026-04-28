@@ -406,6 +406,174 @@
           }
         }
       }
+    },
+    "/api/movimientos/": {
+      "post": {
+        "tags": [
+          "Movimiento Inventario"
+        ],
+        "summary": "Crear movimiento de inventario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tipo": {
+                  "type": "string",
+                  "example": "entrada | salida | ajuste"
+                },
+                "cantidad": {
+                  "type": "number",
+                  "example": 10
+                },
+                "id_inventario": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Movimiento Inventario"
+        ],
+        "summary": "Listar movimientos de inventario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "example": "entrada"
+          },
+          {
+            "name": "id_inventario",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/movimientos/inventario/{idInventario}": {
+      "get": {
+        "tags": [
+          "Movimiento Inventario"
+        ],
+        "summary": "Obtener movimientos por inventario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "idInventario",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/movimientos/{id}": {
+      "get": {
+        "tags": [
+          "Movimiento Inventario"
+        ],
+        "summary": "Obtener movimiento de inventario por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   }
 }

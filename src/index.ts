@@ -6,6 +6,7 @@ import swaggerUI from 'swagger-ui-express'
 import { PORT } from './config.js'
 import authRouter from './routes/auth.routes.js'
 import inventarioRouter from './routes/inventario.routes.js'
+import movimientoInventarioRouter from './routes/movimiento-inventario.routes.js'
 
 const app = express()
 
@@ -26,6 +27,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 // Rutas
 app.use('/api/auth', authRouter)
 app.use('/api/inventario', inventarioRouter)
+app.use('/api/movimientos', movimientoInventarioRouter)
 
 // Ruta de salud para verificar que la API está funcionando
 app.get(
