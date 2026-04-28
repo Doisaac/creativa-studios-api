@@ -213,6 +213,38 @@
             "name": "x-token",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a consultar",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por página",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Texto para buscar por nombre de inventario",
+            "type": "string",
+            "required": false,
+            "example": "camisas"
+          },
+          {
+            "name": "bajo_stock",
+            "in": "query",
+            "description": "Filtra inventario con bajo stock; acepta true o false",
+            "type": "boolean",
+            "required": false,
+            "example": true
           }
         ],
         "responses": {

@@ -38,6 +38,34 @@ inventarioRouter.get(
   '/',
   /* #swagger.tags = ['Inventario']
      #swagger.summary = 'Listar inventario'
+     #swagger.parameters['page'] = {
+       in: 'query',
+       description: 'Número de página a consultar',
+       type: 'integer',
+       required: false,
+       example: 1
+     }
+     #swagger.parameters['limit'] = {
+       in: 'query',
+       description: 'Cantidad de registros por página',
+       type: 'integer',
+       required: false,
+       example: 10
+     }
+     #swagger.parameters['search'] = {
+       in: 'query',
+       description: 'Texto para buscar por nombre de inventario',
+       type: 'string',
+       required: false,
+       example: 'camisas'
+     }
+     #swagger.parameters['bajo_stock'] = {
+       in: 'query',
+       description: 'Filtra inventario con bajo stock; acepta true o false',
+       type: 'boolean',
+       required: false,
+       example: true
+     }
   */
 
   validateJWT,
