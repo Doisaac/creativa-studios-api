@@ -149,7 +149,7 @@ export const listProducto = async (
        costo_base,
        codigo,
        id_insumo_inventario,
-       created_at,
+       created_at
      FROM producto
      ${whereClause}
      ORDER BY nombre ASC, id ASC

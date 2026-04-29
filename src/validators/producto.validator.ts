@@ -14,8 +14,8 @@ const parseNonNegativeInteger = (
   value: unknown,
   fieldName: string,
 ): number | string => {
-  if (typeof value !== 'number' || !Number.isInteger(value) || value < 0) {
-    return `${fieldName} debe ser un entero mayor o igual a 0`
+  if (typeof value !== 'number' || value < 0) {
+    return `${fieldName} debe ser un número mayor o igual a 0`
   }
 
   return value
@@ -44,10 +44,7 @@ export const validateCreateProductoInput = (
     return { error: 'tipo es requerido' }
   }
 
-  const parsedcosto_base = parseNonNegativeInteger(
-    costo_base,
-    'costo_base',
-  )
+  const parsedcosto_base = parseNonNegativeInteger(costo_base, 'costo_base')
 
   if (typeof parsedcosto_base === 'string') {
     return { error: parsedcosto_base }
@@ -104,10 +101,7 @@ export const validateUpdateProductoInput = (
   }
 
   if (costo_base !== undefined) {
-    const parsedcosto_base = parseNonNegativeInteger(
-      costo_base,
-      'costo_base',
-    )
+    const parsedcosto_base = parseNonNegativeInteger(costo_base, 'costo_base')
     if (typeof parsedcosto_base === 'string') {
       return { error: parsedcosto_base }
     }

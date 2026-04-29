@@ -14,17 +14,16 @@ export const createProducto = async (payload: CrearProductoInput) => {
   try {
     await client.query('BEGIN')
 
-    const existingProducto =
-      await productoRepository.findProductoByNombre(payload.nombre, client)
+    const existingProducto = await productoRepository.findProductoByNombre(
+      payload.nombre,
+      client,
+    )
 
     if (existingProducto) {
       throw new ProductoError('Ya existe un insumo con ese nombre', 409)
     }
 
-    const producto = await productoRepository.createProducto(
-      payload,
-      client,
-    )
+    const producto = await productoRepository.createProducto(payload, client)
 
     await client.query('COMMIT')
 
@@ -85,11 +84,10 @@ export const updateProducto = async (
       payload.nombre &&
       payload.nombre.toLowerCase() !== currentProducto.nombre.toLowerCase()
     ) {
-      const existingProducto =
-        await productoRepository.findProductoByNombre(
-          payload.nombre,
-          client,
-        )
+      const existingProducto = await productoRepository.findProductoByNombre(
+        payload.nombre,
+        client,
+      )
 
       if (existingProducto && existingProducto.id !== id) {
         throw new ProductoError('Ya existe un insumo con ese nombre', 409)
@@ -128,18 +126,6 @@ export const deleteProducto = async (id: number) => {
       throw new ProductoError('Registro de producto no encontrado', 404)
     }
 
-    const references = await productoRepository.getProductoReferences(
-      id,
-      client,
-    )
-
-    if (references.productos > 0 || references.movimientos > 0) {
-      throw new ProductoError(
-        'No se puede eliminar el producto porque tiene referencias asociadas',
-        409,
-      )
-    }
-
     await productoRepository.deleteProductoById(id, client)
 
     await client.query('COMMIT')
@@ -150,4 +136,3 @@ export const deleteProducto = async (id: number) => {
     client.release()
   }
 }
-
