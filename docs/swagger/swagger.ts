@@ -23,6 +23,10 @@ const doc = {
       name: 'Inventario',
       description: 'Gestión de inventario',
     },
+    {
+      name: 'Producto',
+      description: 'Gestion de productos',
+    },
   ],
 }
 

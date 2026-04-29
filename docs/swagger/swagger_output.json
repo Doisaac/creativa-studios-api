@@ -574,6 +574,190 @@
           }
         }
       }
+    },
+
+
+    "/api/producto/": {
+      "post": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Crear producto",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Camisa , Pantalon , Zapatos"
+                },
+                "tipo": {
+                  "type": "string",
+                  "example": "Pendiente de definir"
+                },
+                "costo_base": {
+                  "type": "number",
+                  "example": 4.75
+                },
+                "codigo": {
+                  "type": "string",
+                  "example": "C3g53H6"
+                },
+                "id_insumo_inventario": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Listar productos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a consultar",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por página",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Buscar por nombre",
+            "type": "string",
+            "required": false,
+            "example": "Camisa , Pantalon , Zapatos"
+          },
+          {
+            "name": "codigo",
+            "in": "query",
+            "description": "Buscar por codigo",
+            "type": "string",
+            "required": false,
+            "example": "C3g53H6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+
+
+    "/api/producto/{id}": {
+      "get": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Obtener producto por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Eliminar producto por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+
     }
+
   }
 }
