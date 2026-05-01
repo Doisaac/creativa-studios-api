@@ -27,6 +27,10 @@ const doc = {
       name: 'Producto',
       description: 'Gestion de productos',
     },
+    {
+      name: 'Precio',
+      description: 'Gestión de precios',
+    },
   ],
 }
 

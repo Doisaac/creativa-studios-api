@@ -8,6 +8,7 @@ import authRouter from './routes/auth.routes.js'
 import inventarioRouter from './routes/inventario.routes.js'
 import movimientoInventarioRouter from './routes/movimiento-inventario.routes.js'
 import productoRouter from './routes/producto.routes.js'
+import precioRouter from './routes/precio.routes.js'
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/inventario', inventarioRouter)
 app.use('/api/movimientos', movimientoInventarioRouter)
 app.use('/api/producto', productoRouter)
+app.use('/api/precio', precioRouter)
 
 // Ruta de salud para verificar que la API está funcionando
 app.get(
