@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import swaggerDocumentation from '../docs/swagger/swagger_output.json' with { type: 'json' }
 import swaggerUI from 'swagger-ui-express'
+import cors from 'cors'
 
 import { PORT } from './config.js'
 import authRouter from './routes/auth.routes.js'
@@ -15,6 +16,9 @@ import pedidoRouter from './routes/pedido.routes.js'
 const app = express()
 
 const SERVER_STARTED_AT = Date.now()
+
+// CORS
+app.use(cors())
 
 // Transforma el cuerpo de la solicitud en formato JSON
 app.use(express.json())
