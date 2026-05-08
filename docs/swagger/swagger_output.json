@@ -446,6 +446,10 @@
                 "id_inventario": {
                   "type": "number",
                   "example": 1
+                },
+                "comentario": {
+                  "type": "string",
+                  "example": "Ingreso inicial de stock"
                 }
               }
             }
@@ -1164,6 +1168,231 @@
           },
           "403": {
             "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/pedido/": {
+      "post": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Crear pedido",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_cliente": {
+                  "type": "number",
+                  "example": 1
+                },
+                "fecha_entrega": {
+                  "type": "string",
+                  "example": "2026-05-20"
+                },
+                "detalles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id_producto": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "cantidad": {
+                        "type": "number",
+                        "example": 5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Listar pedidos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a consultar",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por página",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "description": "Filtrar por estado del pedido",
+            "type": "string",
+            "required": false,
+            "example": "pendiente"
+          },
+          {
+            "name": "idCliente",
+            "in": "query",
+            "description": "Filtrar por cliente",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "idUsuario",
+            "in": "query",
+            "description": "Filtrar por usuario que creó el pedido",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/pedido/{id}": {
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Obtener pedido por id con detalle",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/pedido/{id}/estado": {
+      "patch": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Actualizar estado del pedido",
+        "description": "Actualiza el estado del pedido según el flujo permitido del MVP. Al cambiar de pendiente a produccion, se descuenta inventario automáticamente y se registra un movimiento de salida. Al cambiar de produccion a cancelado, se devuelve el stock descontado y se registra un movimiento de entrada. Si el pedido pasa de pendiente a cancelado, no se afecta inventario.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Nuevo estado del pedido. Estados permitidos: pendiente, produccion, finalizado, cancelado, entregado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estado": {
+                  "type": "string",
+                  "example": "cancelado"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado del pedido actualizado correctamente"
+          },
+          "400": {
+            "description": "Estado inválido o datos incorrectos"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "No tiene permisos para cambiar a ese estado"
+          },
+          "404": {
+            "description": "Pedido no encontrado"
+          },
+          "409": {
+            "description": "Transición de estado no permitida o conflicto con inventario"
           }
         }
       }

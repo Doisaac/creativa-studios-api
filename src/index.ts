@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import swaggerDocumentation from '../docs/swagger/swagger_output.json' with { type: 'json' }
 import swaggerUI from 'swagger-ui-express'
+import cors from 'cors'
 
 import { PORT } from './config.js'
 import authRouter from './routes/auth.routes.js'
@@ -10,10 +11,14 @@ import movimientoInventarioRouter from './routes/movimiento-inventario.routes.js
 import productoRouter from './routes/producto.routes.js'
 import precioRouter from './routes/precio.routes.js'
 import clienteRouter from './routes/cliente.routes.js'
+import pedidoRouter from './routes/pedido.routes.js'
 
 const app = express()
 
 const SERVER_STARTED_AT = Date.now()
+
+// CORS
+app.use(cors())
 
 // Transforma el cuerpo de la solicitud en formato JSON
 app.use(express.json())
@@ -34,6 +39,7 @@ app.use('/api/movimientos', movimientoInventarioRouter)
 app.use('/api/producto', productoRouter)
 app.use('/api/precio', precioRouter)
 app.use('/api/cliente', clienteRouter)
+app.use('/api/pedido', pedidoRouter)
 
 // Ruta de salud para verificar que la API está funcionando
 app.get(
