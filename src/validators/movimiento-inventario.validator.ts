@@ -38,7 +38,10 @@ export const validateCreateMovimientoInventarioInput = (
     return { error: 'Payload invalido' }
   }
 
-  const { tipo, cantidad, id_inventario } = body as Record<string, unknown>
+  const { tipo, cantidad, id_inventario, comentario } = body as Record<
+    string,
+    unknown
+  >
 
   if (
     typeof tipo !== 'string' ||
@@ -57,13 +60,26 @@ export const validateCreateMovimientoInventarioInput = (
     return { error: parsedInventarioId }
   }
 
-  return {
-    value: {
-      tipo: tipo as TipoMovimientoInventario,
-      cantidad: parsedCantidad,
-      id_inventario: parsedInventarioId,
-    },
+  if (
+    comentario !== undefined &&
+    comentario !== null &&
+    typeof comentario !== 'string'
+  ) {
+    return { error: 'comentario debe ser un texto' }
   }
+
+  const value: CrearMovimientoInventarioInput = {
+    tipo: tipo as TipoMovimientoInventario,
+    cantidad: parsedCantidad,
+    id_inventario: parsedInventarioId,
+  }
+
+  if (comentario !== undefined) {
+    value.comentario =
+      typeof comentario === 'string' ? comentario.trim() || null : null
+  }
+
+  return { value }
 }
 
 export const validateMovimientoInventarioFilters = (

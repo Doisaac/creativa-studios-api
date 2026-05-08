@@ -155,6 +155,8 @@ CREATE TABLE movimiento_inventario (
     cantidad INTEGER NOT NULL
        CHECK(cantidad > 0),
 
+    comentario TEXT,
+
     fecha_movimiento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     id_inventario INTEGER NOT NULL,

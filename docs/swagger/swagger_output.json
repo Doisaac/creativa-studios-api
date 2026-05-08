@@ -446,6 +446,10 @@
                 "id_inventario": {
                   "type": "number",
                   "example": 1
+                },
+                "comentario": {
+                  "type": "string",
+                  "example": "Ingreso inicial de stock"
                 }
               }
             }

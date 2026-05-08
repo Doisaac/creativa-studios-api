@@ -20,7 +20,8 @@ movimientoInventarioRouter.post(
        schema: {
          tipo: 'entrada | salida | ajuste',
          cantidad: 10,
-         id_inventario: 1
+         id_inventario: 1,
+         comentario: 'Ingreso inicial de stock'
        }
      }
   */
