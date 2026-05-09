@@ -3,6 +3,7 @@ export interface Precio {
   margen_ganancia: number
   precio_sugerido: number
   id_producto: number
+  nombre_producto: string | null
 }
 
 export interface CrearPrecioInput {
