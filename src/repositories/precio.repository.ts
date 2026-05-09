@@ -1,7 +1,7 @@
 import type { PoolClient, QueryResultRow } from 'pg'
 
 import { pool } from '../db.js'
-import type { Precio } from '../types/precio.types.js'
+import type { Precio, PrecioFilters } from '../types/precio.types.js'
 
 type Queryable = PoolClient | typeof pool
 
@@ -31,6 +31,54 @@ export const findPrecioByProductoId = async (
   )
 
   return result.rows[0] ? mapPrecio(result.rows[0]) : null
+}
+
+export const listPrecio = async (
+  filters: PrecioFilters,
+  db: Queryable = pool,
+): Promise<{ items: Precio[]; total: number }> => {
+  const qualifiedConditions: string[] = []
+  const values: Array<string | number> = []
+
+  if (filters.search) {
+    values.push(`%${filters.search}%`)
+    qualifiedConditions.push(`p.nombre ILIKE $${values.length}`)
+  }
+
+  const qualifiedWhereClause =
+    qualifiedConditions.length > 0
+      ? `WHERE ${qualifiedConditions.join(' AND ')}`
+      : ''
+
+  const countResult = await db.query<{ total: string }>(
+    `SELECT COUNT(*) AS total
+     FROM precio pr
+     INNER JOIN producto p ON p.id = pr.id_producto
+     ${qualifiedWhereClause}`,
+    values,
+  )
+
+  values.push(filters.limit, (filters.page - 1) * filters.limit)
+
+  const result = await db.query<Precio>(
+    `SELECT pr.id,
+            pr.margen_ganancia,
+            pr.precio_sugerido,
+            pr.id_producto,
+            p.nombre AS nombre_producto
+     FROM precio pr
+     INNER JOIN producto p ON p.id = pr.id_producto
+     ${qualifiedWhereClause}
+     ORDER BY p.nombre ASC, pr.id ASC
+     LIMIT $${values.length - 1}
+     OFFSET $${values.length}`,
+    values,
+  )
+
+  return {
+    items: result.rows.map(mapPrecio),
+    total: Number.parseInt(countResult.rows[0]?.total ?? '0', 10),
+  }
 }
 
 export const createPrecio = async (
