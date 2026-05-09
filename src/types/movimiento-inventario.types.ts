@@ -4,14 +4,17 @@ export interface MovimientoInventario {
   id: number
   tipo: TipoMovimientoInventario
   cantidad: number
+  comentario: string | null
   fecha_movimiento: Date
   id_inventario: number
+  nombre_inventario: string
 }
 
 export interface CrearMovimientoInventarioInput {
   tipo: TipoMovimientoInventario
   cantidad: number
   id_inventario: number
+  comentario?: string | null
 }
 
 export interface MovimientoInventarioFilters {
