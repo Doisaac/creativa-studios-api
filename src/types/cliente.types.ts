@@ -1,17 +1,26 @@
 export interface Cliente {
   id: number
-  nombre: string
-  telefono: string | null
+  nombre_comercial: string | null
+  nombre_contacto: string
+  telefono: string
+  email: string | null
+  direccion: string
 }
 
 export interface CrearClienteInput {
-  nombre: string
-  telefono?: string
+  nombre_comercial?: string | null
+  nombre_contacto: string
+  telefono: string
+  email?: string | null
+  direccion: string
 }
 
 export interface ActualizarClienteInput {
-  nombre?: string
+  nombre_comercial?: string | null
+  nombre_contacto?: string
   telefono?: string
+  email?: string | null
+  direccion?: string
 }
 
 export interface ClienteFilters {
@@ -22,8 +31,11 @@ export interface ClienteFilters {
 
 export interface ClienteListItem {
   id: number
-  nombre: string
-  telefono: string | null
+  nombre_comercial: string | null
+  nombre_contacto: string
+  telefono: string
+  email: string | null
+  direccion: string
 }
 
 export interface ClienteListResult {

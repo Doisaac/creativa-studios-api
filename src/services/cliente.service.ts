@@ -14,15 +14,13 @@ export const createCliente = async (payload: CrearClienteInput) => {
   try {
     await client.query('BEGIN')
 
-    if (payload.telefono) {
-      const existingCliente = await clienteRepository.findClienteByTelefono(
-        payload.telefono,
-        client,
-      )
+    const existingCliente = await clienteRepository.findClienteByTelefono(
+      payload.telefono,
+      client,
+    )
 
-      if (existingCliente) {
-        throw new ClienteError('Ya existe un cliente con ese telefono', 409)
-      }
+    if (existingCliente) {
+      throw new ClienteError('Ya existe un cliente con ese telefono', 409)
     }
 
     const cliente = await clienteRepository.createCliente(payload, client)
@@ -79,7 +77,10 @@ export const updateCliente = async (
       throw new ClienteError('Cliente no encontrado', 404)
     }
 
-    if (payload.telefono && payload.telefono !== currentCliente.telefono) {
+    if (
+      payload.telefono !== undefined &&
+      payload.telefono !== currentCliente.telefono
+    ) {
       const existingCliente = await clienteRepository.findClienteByTelefono(
         payload.telefono,
         client,

@@ -20,8 +20,11 @@ clienteRouter.post(
        in: 'body',
        required: true,
        schema: {
-         nombre: 'Juan Perez',
-         telefono: '77777777'
+         nombre_comercial: 'Café Verde',
+         nombre_contacto: 'Andrea Rivas',
+         telefono: '77777777',
+         email: 'andrea@cafeverde.com',
+         direccion: 'Santa Ana'
        }
      }
   */
@@ -51,10 +54,10 @@ clienteRouter.get(
      }
      #swagger.parameters['search'] = {
        in: 'query',
-       description: 'Texto para buscar por nombre o telefono',
+       description: 'Texto para buscar por nombre comercial, contacto, teléfono, email o dirección',
        type: 'string',
        required: false,
-       example: 'Juan'
+       example: 'Andrea'
      }
   */
 
@@ -80,8 +83,11 @@ clienteRouter.patch(
        in: 'body',
        required: true,
        schema: {
-         nombre: 'Juan Perez',
-         telefono: '77777777'
+         nombre_comercial: 'Café Verde',
+         nombre_contacto: 'Andrea Rivas',
+         telefono: '77777777',
+         email: 'andrea@cafeverde.com',
+         direccion: 'Santa Ana'
        }
      }
   */

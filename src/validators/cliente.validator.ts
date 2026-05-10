@@ -10,6 +10,23 @@ const CLIENTE_LIMIT_MAX = 100
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === 'string' && value.trim().length > 0
 
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+
+const normalizeOptionalNullableString = (
+  value: unknown,
+): string | null | undefined => {
+  if (value === undefined) return undefined
+  if (value === null) return null
+
+  if (typeof value !== 'string') {
+    return undefined
+  }
+
+  const trimmedValue = value.trim()
+
+  return trimmedValue.length > 0 ? trimmedValue : null
+}
+
 export const validateCreateClienteInput = (
   body: unknown,
 ): { value?: CrearClienteInput; error?: string } => {
@@ -17,30 +34,78 @@ export const validateCreateClienteInput = (
     return { error: 'Payload invalido' }
   }
 
-  const { nombre, telefono } = body as Record<string, unknown>
+  const { nombre_comercial, nombre_contacto, telefono, email, direccion } =
+    body as Record<string, unknown>
 
-  if (!isNonEmptyString(nombre)) {
-    return { error: 'nombre es requerido' }
+  if (!isNonEmptyString(nombre_contacto)) {
+    return { error: 'nombre_contacto es requerido' }
   }
 
-  if (nombre.trim().length > 100) {
-    return { error: 'nombre no debe exceder los 100 caracteres' }
+  if (nombre_contacto.trim().length > 100) {
+    return {
+      error: 'nombre_contacto no debe exceder los 100 caracteres',
+    }
+  }
+
+  if (!isNonEmptyString(telefono)) {
+    return { error: 'telefono es requerido' }
+  }
+
+  if (telefono.trim().length > 20) {
+    return { error: 'telefono no debe exceder los 20 caracteres' }
+  }
+
+  if (!isNonEmptyString(direccion)) {
+    return { error: 'direccion es requerida' }
+  }
+
+  if (direccion.trim().length > 150) {
+    return { error: 'direccion no debe exceder los 150 caracteres' }
+  }
+
+  const normalizedNombreComercial =
+    normalizeOptionalNullableString(nombre_comercial)
+
+  if (
+    normalizedNombreComercial !== undefined &&
+    normalizedNombreComercial !== null &&
+    normalizedNombreComercial.length > 100
+  ) {
+    return {
+      error: 'nombre_comercial no debe exceder los 100 caracteres',
+    }
+  }
+
+  const normalizedEmail = normalizeOptionalNullableString(email)
+
+  if (
+    normalizedEmail !== undefined &&
+    normalizedEmail !== null &&
+    normalizedEmail.length > 150
+  ) {
+    return { error: 'email no debe exceder los 150 caracteres' }
+  }
+
+  if (
+    normalizedEmail !== undefined &&
+    normalizedEmail !== null &&
+    !isValidEmail(normalizedEmail)
+  ) {
+    return { error: 'email debe tener un formato valido' }
   }
 
   const value: CrearClienteInput = {
-    nombre: nombre.trim(),
+    nombre_contacto: nombre_contacto.trim(),
+    telefono: telefono.trim(),
+    direccion: direccion.trim(),
   }
 
-  if (telefono !== undefined) {
-    if (!isNonEmptyString(telefono)) {
-      return { error: 'telefono debe ser un texto no vacio' }
-    }
+  if (normalizedNombreComercial !== undefined) {
+    value.nombre_comercial = normalizedNombreComercial
+  }
 
-    if (telefono.trim().length > 20) {
-      return { error: 'telefono no debe exceder los 20 caracteres' }
-    }
-
-    value.telefono = telefono.trim()
+  if (normalizedEmail !== undefined) {
+    value.email = normalizedEmail
   }
 
   return { value }
@@ -53,20 +118,45 @@ export const validateUpdateClienteInput = (
     return { error: 'Payload invalido' }
   }
 
-  const { nombre, telefono } = body as Record<string, unknown>
+  const { nombre_comercial, nombre_contacto, telefono, email, direccion } =
+    body as Record<string, unknown>
 
   const value: ActualizarClienteInput = {}
 
-  if (nombre !== undefined) {
-    if (!isNonEmptyString(nombre)) {
-      return { error: 'nombre debe ser un texto no vacio' }
+  if (nombre_comercial !== undefined) {
+    const normalizedNombreComercial =
+      normalizeOptionalNullableString(nombre_comercial)
+
+    if (normalizedNombreComercial === undefined) {
+      return {
+        error: 'nombre_comercial debe ser un texto valido o null',
+      }
     }
 
-    if (nombre.trim().length > 100) {
-      return { error: 'nombre no debe exceder los 100 caracteres' }
+    if (
+      normalizedNombreComercial !== null &&
+      normalizedNombreComercial.length > 100
+    ) {
+      return {
+        error: 'nombre_comercial no debe exceder los 100 caracteres',
+      }
     }
 
-    value.nombre = nombre.trim()
+    value.nombre_comercial = normalizedNombreComercial
+  }
+
+  if (nombre_contacto !== undefined) {
+    if (!isNonEmptyString(nombre_contacto)) {
+      return { error: 'nombre_contacto debe ser un texto no vacio' }
+    }
+
+    if (nombre_contacto.trim().length > 100) {
+      return {
+        error: 'nombre_contacto no debe exceder los 100 caracteres',
+      }
+    }
+
+    value.nombre_contacto = nombre_contacto.trim()
   }
 
   if (telefono !== undefined) {
@@ -79,6 +169,36 @@ export const validateUpdateClienteInput = (
     }
 
     value.telefono = telefono.trim()
+  }
+
+  if (email !== undefined) {
+    const normalizedEmail = normalizeOptionalNullableString(email)
+
+    if (normalizedEmail === undefined) {
+      return { error: 'email debe ser un texto valido o null' }
+    }
+
+    if (normalizedEmail !== null && normalizedEmail.length > 150) {
+      return { error: 'email no debe exceder los 150 caracteres' }
+    }
+
+    if (normalizedEmail !== null && !isValidEmail(normalizedEmail)) {
+      return { error: 'email debe tener un formato valido' }
+    }
+
+    value.email = normalizedEmail
+  }
+
+  if (direccion !== undefined) {
+    if (!isNonEmptyString(direccion)) {
+      return { error: 'direccion debe ser un texto no vacio' }
+    }
+
+    if (direccion.trim().length > 150) {
+      return { error: 'direccion no debe exceder los 150 caracteres' }
+    }
+
+    value.direccion = direccion.trim()
   }
 
   if (Object.keys(value).length === 0) {
