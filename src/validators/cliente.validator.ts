@@ -4,7 +4,7 @@ import type {
   CrearClienteInput,
 } from '../types/cliente.types.js'
 
-const CLIENTE_LIMIT_DEFAULT = 10
+const CLIENTE_LIMIT_DEFAULT = 9
 const CLIENTE_LIMIT_MAX = 100
 
 const isNonEmptyString = (value: unknown): value is string =>

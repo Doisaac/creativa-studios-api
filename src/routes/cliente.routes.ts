@@ -50,7 +50,7 @@ clienteRouter.get(
        description: 'Cantidad de registros por página',
        type: 'integer',
        required: false,
-       example: 10
+       example: 9
      }
      #swagger.parameters['search'] = {
        in: 'query',
