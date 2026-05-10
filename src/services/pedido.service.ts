@@ -22,6 +22,9 @@ const TRANSICIONES_PERMITIDAS: Record<PedidoEstado, PedidoEstado[]> = {
   entregado: [],
 }
 
+const getPedidoCodigo = (idPedido: number) =>
+  `PED-${String(idPedido).padStart(4, '0')}`
+
 const validateEstadoTransition = (
   estadoActual: PedidoEstado,
   nuevoEstado: PedidoEstado,
@@ -113,6 +116,7 @@ const descontarInventarioPedido = async (
         tipo: 'salida',
         cantidad: detalle.cantidad,
         id_inventario: detalle.id_insumo_inventario,
+        comentario: `Consumo por pedido ${getPedidoCodigo(idPedido)}`,
       },
       client,
     )
@@ -166,6 +170,7 @@ const devolverInventarioPedido = async (
         tipo: 'entrada',
         cantidad: detalle.cantidad,
         id_inventario: detalle.id_insumo_inventario,
+        comentario: `Reversión por cancelación de pedido ${getPedidoCodigo(idPedido)}`,
       },
       client,
     )
