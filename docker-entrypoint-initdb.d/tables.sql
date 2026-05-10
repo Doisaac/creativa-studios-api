@@ -20,8 +20,11 @@ CREATE TABLE usuario (
 
 CREATE TABLE cliente (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20) UNIQUE
+    nombre_comercial VARCHAR(100),
+    nombre_contacto VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20) UNIQUE NOT NULL,
+    email VARCHAR(150),
+    direccion VARCHAR(150) NOT NULL
 );
 
 CREATE TABLE inventario (
