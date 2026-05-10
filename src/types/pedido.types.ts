@@ -47,8 +47,15 @@ export interface PedidoListItem {
   fecha_creacion: Date
   fecha_entrega: Date | string | null
   total_pedido: number
+
   id_cliente: number
   cliente_nombre: string
+  cliente_nombre_comercial: string | null
+  cliente_nombre_contacto: string
+  cliente_telefono: string
+  cliente_email: string | null
+  cliente_direccion: string
+
   id_usuario: number
   usuario_nombre: string
 }
@@ -70,12 +77,19 @@ export interface PedidoDetalle {
   fecha_creacion: Date
   fecha_entrega: Date | string | null
   total_pedido: number
+
   id_cliente: number
   cliente_nombre: string
-  cliente_telefono: string | null
+  cliente_nombre_comercial: string | null
+  cliente_nombre_contacto: string
+  cliente_telefono: string
+  cliente_email: string | null
+  cliente_direccion: string
+
   id_usuario: number
   usuario_nombre: string
   usuario_email: string
+
   detalles: PedidoDetalleItem[]
 }
 

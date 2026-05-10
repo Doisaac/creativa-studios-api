@@ -12,8 +12,11 @@ type Queryable = PoolClient | typeof pool
 
 const mapCliente = <T extends QueryResultRow>(row: T): Cliente => ({
   id: row.id,
-  nombre: row.nombre,
-  telefono: row.telefono ?? null,
+  nombre_comercial: row.nombre_comercial ?? null,
+  nombre_contacto: row.nombre_contacto,
+  telefono: row.telefono,
+  email: row.email ?? null,
+  direccion: row.direccion,
 })
 
 export const findClienteById = async (
@@ -21,7 +24,7 @@ export const findClienteById = async (
   db: Queryable = pool,
 ): Promise<Cliente | null> => {
   const result = await db.query(
-    `SELECT id, nombre, telefono
+    `SELECT id, nombre_comercial, nombre_contacto, telefono, email, direccion
      FROM cliente
      WHERE id = $1
      LIMIT 1`,
@@ -36,7 +39,7 @@ export const findClienteByTelefono = async (
   db: Queryable = pool,
 ): Promise<Cliente | null> => {
   const result = await db.query(
-    `SELECT id, nombre, telefono
+    `SELECT id, nombre_comercial, nombre_contacto, telefono, email, direccion
      FROM cliente
      WHERE telefono = $1
      LIMIT 1`,
@@ -51,10 +54,22 @@ export const createCliente = async (
   db: Queryable = pool,
 ): Promise<Cliente> => {
   const result = await db.query(
-    `INSERT INTO cliente (nombre, telefono)
-     VALUES ($1, $2)
-     RETURNING id, nombre, telefono`,
-    [payload.nombre, payload.telefono ?? null],
+    `INSERT INTO cliente (
+       nombre_comercial,
+       nombre_contacto,
+       telefono,
+       email,
+       direccion
+     )
+     VALUES ($1, $2, $3, $4, $5)
+     RETURNING id, nombre_comercial, nombre_contacto, telefono, email, direccion`,
+    [
+      payload.nombre_comercial ?? null,
+      payload.nombre_contacto,
+      payload.telefono,
+      payload.email ?? null,
+      payload.direccion,
+    ],
   )
 
   return mapCliente(result.rows[0])
@@ -70,7 +85,13 @@ export const listCliente = async (
   if (filters.search) {
     values.push(`%${filters.search}%`)
     conditions.push(
-      `(nombre ILIKE $${values.length} OR telefono ILIKE $${values.length})`,
+      `(
+        nombre_comercial ILIKE $${values.length}
+        OR nombre_contacto ILIKE $${values.length}
+        OR telefono ILIKE $${values.length}
+        OR email ILIKE $${values.length}
+        OR direccion ILIKE $${values.length}
+      )`,
     )
   }
 
@@ -87,7 +108,7 @@ export const listCliente = async (
   values.push(filters.limit, (filters.page - 1) * filters.limit)
 
   const result = await db.query(
-    `SELECT id, nombre, telefono
+    `SELECT id, nombre_comercial, nombre_contacto, telefono, email, direccion
      FROM cliente
      ${whereClause}
      ORDER BY id DESC
@@ -108,16 +129,31 @@ export const updateCliente = async (
   db: Queryable = pool,
 ): Promise<Cliente> => {
   const fields: string[] = []
-  const values: Array<string | number> = []
+  const values: Array<string | number | null> = []
 
-  if (payload.nombre !== undefined) {
-    values.push(payload.nombre)
-    fields.push(`nombre = $${values.length}`)
+  if (payload.nombre_comercial !== undefined) {
+    values.push(payload.nombre_comercial)
+    fields.push(`nombre_comercial = $${values.length}`)
+  }
+
+  if (payload.nombre_contacto !== undefined) {
+    values.push(payload.nombre_contacto)
+    fields.push(`nombre_contacto = $${values.length}`)
   }
 
   if (payload.telefono !== undefined) {
     values.push(payload.telefono)
     fields.push(`telefono = $${values.length}`)
+  }
+
+  if (payload.email !== undefined) {
+    values.push(payload.email)
+    fields.push(`email = $${values.length}`)
+  }
+
+  if (payload.direccion !== undefined) {
+    values.push(payload.direccion)
+    fields.push(`direccion = $${values.length}`)
   }
 
   values.push(id)
@@ -126,7 +162,7 @@ export const updateCliente = async (
     `UPDATE cliente
      SET ${fields.join(', ')}
      WHERE id = $${values.length}
-     RETURNING id, nombre, telefono`,
+     RETURNING id, nombre_comercial, nombre_contacto, telefono, email, direccion`,
     values,
   )
 

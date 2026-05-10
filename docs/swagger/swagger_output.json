@@ -1025,13 +1025,25 @@
             "schema": {
               "type": "object",
               "properties": {
-                "nombre": {
+                "nombre_comercial": {
                   "type": "string",
-                  "example": "Juan Perez"
+                  "example": "Café Verde"
+                },
+                "nombre_contacto": {
+                  "type": "string",
+                  "example": "Andrea Rivas"
                 },
                 "telefono": {
                   "type": "string",
                   "example": "77777777"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "andrea@cafeverde.com"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Santa Ana"
                 }
               }
             }
@@ -1083,10 +1095,10 @@
           {
             "name": "search",
             "in": "query",
-            "description": "Texto para buscar por nombre o telefono",
+            "description": "Texto para buscar por nombre comercial, contacto, teléfono, email o dirección",
             "type": "string",
             "required": false,
-            "example": "Juan"
+            "example": "Andrea"
           }
         ],
         "responses": {
@@ -1159,13 +1171,25 @@
             "schema": {
               "type": "object",
               "properties": {
-                "nombre": {
+                "nombre_comercial": {
                   "type": "string",
-                  "example": "Juan Perez"
+                  "example": "Café Verde"
+                },
+                "nombre_contacto": {
+                  "type": "string",
+                  "example": "Andrea Rivas"
                 },
                 "telefono": {
                   "type": "string",
                   "example": "77777777"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "andrea@cafeverde.com"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Santa Ana"
                 }
               }
             }
