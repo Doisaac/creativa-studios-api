@@ -143,6 +143,46 @@ CREATE TABLE detalle_pedido (
       UNIQUE(id_pedido,id_producto)
 );
 
+CREATE TABLE instalacion (
+    id SERIAL PRIMARY KEY,
+
+    id_pedido INTEGER NOT NULL UNIQUE,
+
+    id_instalador INTEGER,
+
+    estado VARCHAR(30) NOT NULL DEFAULT 'pendiente'
+      CHECK (
+        estado IN (
+          'pendiente',
+          'asignada',
+          'en_proceso',
+          'completada',
+          'no_realizada',
+          'cancelada'
+        )
+      ),
+
+    fecha_programada DATE,
+
+    fecha_realizada TIMESTAMPTZ,
+
+    direccion_instalacion VARCHAR(150) NOT NULL,
+
+    observaciones TEXT,
+
+    created_at TIMESTAMPTZ DEFAULT now(),
+
+    CONSTRAINT fk_instalacion_pedido
+      FOREIGN KEY(id_pedido)
+      REFERENCES pedido(id)
+      ON DELETE CASCADE,
+
+    CONSTRAINT fk_instalacion_usuario
+      FOREIGN KEY(id_instalador)
+      REFERENCES usuario(id)
+      ON DELETE SET NULL
+);
+
 CREATE TABLE movimiento_inventario (
     id SERIAL PRIMARY KEY,
 
@@ -190,6 +230,17 @@ ON movimiento_inventario(id_inventario);
 CREATE INDEX idx_movimiento_inventario_inventario_fecha
 ON movimiento_inventario(id_inventario, fecha_movimiento DESC, id DESC);
 
+CREATE INDEX idx_instalacion_pedido
+ON instalacion(id_pedido);
+
+CREATE INDEX idx_instalacion_instalador
+ON instalacion(id_instalador);
+
+CREATE INDEX idx_instalacion_estado
+ON instalacion(estado);
+
+CREATE INDEX idx_instalacion_fecha_programada
+ON instalacion(fecha_programada);
 
 INSERT INTO rol (nombre, descripcion) VALUES
 ('ADMIN', 'Dueño o administrador'),

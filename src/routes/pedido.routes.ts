@@ -7,6 +7,7 @@ import {
   updatePedido,
   updatePedidoEstado,
 } from '../controllers/pedido.controller.js'
+import { createInstalacionForPedido } from '../controllers/instalacion.controller.js'
 import { validateJWT } from '../middlewares/validate-jwt.middleware.js'
 import { validateRole } from '../middlewares/validate-role.middleware.js'
 
@@ -39,6 +40,35 @@ pedidoRouter.post(
   validateJWT,
   validateRole('ADMIN', 'RECEPCION'),
   createPedido,
+)
+
+pedidoRouter.post(
+  '/:id/instalacion',
+  /* #swagger.tags = ['Instalación']
+     #swagger.summary = 'Crear instalación para un pedido'
+     #swagger.description = 'Crea una instalación asociada a un pedido existente. Si se asigna instalador, la instalación queda en estado asignada; si no, queda pendiente.'
+     #swagger.parameters['id'] = {
+       in: 'path',
+       description: 'ID del pedido',
+       type: 'integer',
+       required: true,
+       example: 15
+     }
+     #swagger.parameters['body'] = {
+       in: 'body',
+       required: true,
+       schema: {
+         id_instalador: 4,
+         fecha_programada: '2026-05-20',
+         direccion_instalacion: 'Santa Ana, centro',
+         observaciones: 'Instalar vinil en fachada principal'
+       }
+     }
+  */
+
+  validateJWT,
+  validateRole('ADMIN', 'RECEPCION'),
+  createInstalacionForPedido,
 )
 
 pedidoRouter.get(

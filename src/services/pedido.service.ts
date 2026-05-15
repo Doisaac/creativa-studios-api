@@ -6,6 +6,7 @@ import * as movimientoInventarioRepository from '../repositories/movimiento-inve
 import * as pedidoRepository from '../repositories/pedido.repository.js'
 import * as precioRepository from '../repositories/precio.repository.js'
 import * as productoRepository from '../repositories/producto.repository.js'
+import * as instalacionRepository from '../repositories/instalacion.repository.js'
 import type {
   ActualizarPedidoInput,
   CrearPedidoInput,
@@ -447,6 +448,24 @@ export const updatePedidoEstado = async (
 
     if (currentPedido.estado === 'produccion' && nuevoEstado === 'cancelado') {
       await devolverInventarioPedido(id, client)
+    }
+
+    if (currentPedido.estado === 'finalizado' && nuevoEstado === 'entregado') {
+      const instalacion = await instalacionRepository.findInstalacionByPedidoId(
+        id,
+        client,
+      )
+
+      if (instalacion && instalacion.estado !== 'completada') {
+        throw new PedidoError(
+          'No se puede entregar un pedido con instalación pendiente',
+          409,
+        )
+      }
+    }
+
+    if (nuevoEstado === 'cancelado') {
+      await instalacionRepository.cancelInstalacionByPedidoId(id, client)
     }
 
     await pedidoRepository.updatePedidoEstado(id, nuevoEstado, client)
