@@ -1377,6 +1377,70 @@
         }
       }
     },
+    "/api/pedido/{id}/instalacion": {
+      "post": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Crear instalación para un pedido",
+        "description": "Crea una instalación asociada a un pedido existente. Si se asigna instalador, la instalación queda en estado asignada; si no, queda pendiente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del pedido",
+            "example": 15
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_instalador": {
+                  "type": "number",
+                  "example": 4
+                },
+                "fecha_programada": {
+                  "type": "string",
+                  "example": "2026-05-20"
+                },
+                "direccion_instalacion": {
+                  "type": "string",
+                  "example": "Santa Ana, centro"
+                },
+                "observaciones": {
+                  "type": "string",
+                  "example": "Instalar vinil en fachada principal"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/api/pedido/{id}": {
       "get": {
         "tags": [
@@ -1540,6 +1604,378 @@
           },
           "409": {
             "description": "Transición de estado no permitida o conflicto con inventario"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/": {
+      "get": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Listar instalaciones",
+        "description": "Obtiene el listado general de instalaciones registradas. Disponible para ADMIN y RECEPCION.",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a consultar",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por página",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "description": "Filtrar instalaciones por estado",
+            "type": "string",
+            "required": false,
+            "enum": [
+              "pendiente",
+              "asignada",
+              "en_proceso",
+              "completada",
+              "no_realizada",
+              "cancelada"
+            ],
+            "example": "asignada"
+          },
+          {
+            "name": "idInstalador",
+            "in": "query",
+            "description": "Filtrar instalaciones por instalador asignado",
+            "type": "integer",
+            "required": false,
+            "example": 4
+          },
+          {
+            "name": "idPedido",
+            "in": "query",
+            "description": "Filtrar instalaciones por pedido asociado",
+            "type": "integer",
+            "required": false,
+            "example": 15
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/mis-instalaciones": {
+      "get": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Listar mis instalaciones",
+        "description": "Obtiene únicamente las instalaciones asignadas al usuario autenticado con rol INSTALADOR.",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a consultar",
+            "type": "integer",
+            "required": false,
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por página",
+            "type": "integer",
+            "required": false,
+            "example": 10
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "description": "Filtrar mis instalaciones por estado",
+            "type": "string",
+            "required": false,
+            "enum": [
+              "pendiente",
+              "asignada",
+              "en_proceso",
+              "completada",
+              "no_realizada",
+              "cancelada"
+            ],
+            "example": "asignada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/{id}": {
+      "get": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Obtener instalación por id",
+        "description": "Obtiene el detalle de una instalación específica. El instalador solo puede consultar instalaciones asignadas a él.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la instalación",
+            "example": 1
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/{id}/asignar": {
+      "patch": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Asignar instalador",
+        "description": "Asigna o reasigna un instalador a una instalación pendiente o asignada.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la instalación",
+            "example": 1
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_instalador": {
+                  "type": "number",
+                  "example": 4
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/{id}/estado": {
+      "patch": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Actualizar estado de instalación",
+        "description": "Actualiza el estado operativo de una instalación. Al marcar una instalación como completada, el pedido asociado pasa automáticamente a entregado.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la instalación",
+            "example": 1
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estado": {
+                  "type": "string",
+                  "example": "en_proceso"
+                },
+                "observaciones": {
+                  "type": "string",
+                  "example": "Instalación iniciada por el equipo asignado"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/instalaciones/{id}/reprogramar": {
+      "patch": {
+        "tags": [
+          "Instalación"
+        ],
+        "summary": "Reprogramar instalación",
+        "description": "Actualiza la fecha programada de una instalación y registra observaciones opcionales sobre la reprogramación.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la instalación",
+            "example": 1
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fecha_programada": {
+                  "type": "string",
+                  "example": "2026-05-23"
+                },
+                "observaciones": {
+                  "type": "string",
+                  "example": "Cliente solicitó cambio de fecha"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/usuarios/instaladores": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Listar instaladores",
+        "description": "Obtiene usuarios activos del sistema con rol INSTALADOR para asignarlos a instalaciones.",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
