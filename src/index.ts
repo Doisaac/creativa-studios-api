@@ -12,7 +12,8 @@ import productoRouter from './routes/producto.routes.js'
 import precioRouter from './routes/precio.routes.js'
 import clienteRouter from './routes/cliente.routes.js'
 import pedidoRouter from './routes/pedido.routes.js'
-
+import instalacionRouter from './routes/instalacion.routes.js'
+import usuarioRouter from './routes/usuario.routes.js'
 const app = express()
 
 const SERVER_STARTED_AT = Date.now()
@@ -40,6 +41,8 @@ app.use('/api/producto', productoRouter)
 app.use('/api/precio', precioRouter)
 app.use('/api/cliente', clienteRouter)
 app.use('/api/pedido', pedidoRouter)
+app.use('/api/instalaciones', instalacionRouter)
+app.use('/api/usuarios', usuarioRouter)
 
 // Ruta de salud para verificar que la API está funcionando
 app.get(
